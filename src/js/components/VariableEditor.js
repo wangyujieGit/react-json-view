@@ -55,7 +55,8 @@ class VariableEditor extends React.PureComponent {
             onDelete,
             onSelect,
             displayArrayKey,
-            quotesOnKeys
+            quotesOnKeys,
+            labelRenderer = (name, props) => name
         } = this.props;
         const { editMode } = this.state;
         return (
@@ -78,7 +79,7 @@ class VariableEditor extends React.PureComponent {
                             {...Theme(theme, 'array-key')}
                             key={variable.name + '_' + namespace}
                         >
-                            {variable.name}
+                            {labelRenderer(variable.name, this.props)}
                             <div {...Theme(theme, 'colon')}>:</div>
                         </span>
                     ) : null
@@ -93,7 +94,7 @@ class VariableEditor extends React.PureComponent {
                                 <span style={{ verticalAlign: 'top' }}>"</span>
                             )}
                             <span style={{ display: 'inline-block' }}>
-                                {variable.name}
+                                {labelRenderer(variable.name, this.props)}
                             </span>
                             {!!quotesOnKeys && (
                                 <span style={{ verticalAlign: 'top' }}>"</span>
@@ -108,20 +109,20 @@ class VariableEditor extends React.PureComponent {
                         onSelect === false && onEdit === false
                             ? null
                             : e => {
-                                  let location = [...namespace];
-                                  if (
-                                      (e.ctrlKey || e.metaKey) &&
-                                      onEdit !== false
-                                  ) {
-                                      this.prepopInput(variable);
-                                  } else if (onSelect !== false) {
-                                      location.shift();
-                                      onSelect({
-                                          ...variable,
-                                          namespace: location
-                                      });
-                                  }
-                              }
+                                let location = [...namespace];
+                                if (
+                                    (e.ctrlKey || e.metaKey) &&
+                                    onEdit !== false
+                                ) {
+                                    this.prepopInput(variable);
+                                } else if (onSelect !== false) {
+                                    location.shift();
+                                    onSelect({
+                                        ...variable,
+                                        namespace: location
+                                    });
+                                }
+                            }
                     }
                     {...Theme(theme, 'variableValue', {
                         cursor: onSelect === false ? 'default' : 'pointer'

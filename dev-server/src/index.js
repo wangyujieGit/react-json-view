@@ -52,6 +52,10 @@ ReactDom.render(
                 return false;
             }}
             defaultValue=""
+            labelRenderer={(name, props) => {
+                // console.log('labelRenderer', name, props);
+                return <div>labelRenderer:</div>
+            }}
         />
 
         <br />
